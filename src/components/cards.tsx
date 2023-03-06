@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { KeyboardEvent, useState } from 'react'
 import Image from 'next/image'
 import styles from '@/styles/Home.module.scss'
 import { cardData, textData } from './cardData'
@@ -23,6 +23,14 @@ const Cards = ({ slides }: { slides: any }) => {
     const [current, setCurrent] = useState(2)
     const length = cardData.length
 
+    const handleArrowKey = (e: KeyboardEvent): void => {
+        e.key === 'ArrowRight' && prevSlide() 
+        e.key === 'ArrowLeft' && nextSlide()
+      }
+    const handleEnterKey = (e: KeyboardEvent): void => {
+        e.key === 'Enter' && nextSlide()
+    }
+
     const nextSlide = () => {
         // Switch all the cards up one
         setCurrent(current === length - 1 ? 0 : current + 1)
@@ -43,18 +51,29 @@ const Cards = ({ slides }: { slides: any }) => {
 
     const visibleCards = calculateVisibleCardArray(cardData, current)
 
+ 
+
     return (
         <>
             <div 
                 className={styles.container}
+                onKeyDown={handleArrowKey}
+                role="button"
+                tabIndex={0}
             >
                 <FaArrowAltCircleLeft
                     id="leftArrow"
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={handleEnterKey}
                     className={classnames(styles.arrow, styles.leftarrow)}
                     onClick={nextSlide}
                 />
                 <FaArrowAltCircleRight
                     id="rightArrow"
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={handleEnterKey}
                     className={classnames(styles.arrow, styles.rightarrow)}
                     onClick={prevSlide}
                 />
